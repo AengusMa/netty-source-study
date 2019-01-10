@@ -13,6 +13,7 @@ public class Client {
     private static final int SLEEP_TIME = 5000;
 
     public static void main(String[] args) throws IOException {
+        // NioEvent
         final Socket socket = new Socket(HOST, PORT);
         new Thread(() -> {
             System.out.println("客户端启动成功");
