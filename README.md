@@ -32,3 +32,28 @@ AbstractUnsafe.bind()[入口]
         javaChannel().bind()[jdk底层绑定]
     pipeline.fireChannelActive()[传播事件]
         HeadContext.readIfIsAutoRead()
+### 2.NioEventLoop
+- NioEventLoop创建
+new NioEventLoopGroup()[线程组，默认2*CPU]
+    new ThreadPerTaskExecutor()[线程创建器]
+        ThreadPerTaskExecutor：
+            每执行任务都会创建一个线程实体
+            NioEventLoop线程命名规则nioEventLoop-1-xx              
+    for() {new Child()}[构造NioEventLoop]
+        保存线程执行器ThreadPerTaskExecutor
+        创建一个MpscQueue
+        创建selector
+    choosertFactory.newChooser()[线程选择器]
+        isPowerOfTwo(){(val & -val) == val;}[判断是否是2的幂。2,4,8,16] 
+            PowerOfTowEventExecutorChooser[优化]
+                index++&(length-1)
+            GenericEventExecutorChooser[普通]
+                abs(index++%length)
+- NioEventLoop启动
+    服务端启动绑定端口
+        bind()->execute(task)[入口]
+            startThread()->doStartThread()[创建线程]
+                ThreadPerTaskExecutor.execute()
+                    thread=Thread.currentThread()[保存线程]
+    新连接接入通过chooser绑定一个NioEventLoop
+- NioEventLoop执行逻辑
