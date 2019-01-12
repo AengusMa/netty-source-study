@@ -55,5 +55,37 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
             startThread()->doStartThread()[创建线程]
                 ThreadPerTaskExecutor.execute()
                     thread=Thread.currentThread()[保存线程]
-    新连接接入通过chooser绑定一个NioEventLoop
+                    SingleThreadEventExecutor.this.run(实际NioEventLoop.run()[启动])
+    新连接接入通过chooser绑定一个NioEventLoop    
 - NioEventLoop执行逻辑
+ 实际NioEventLoop.run()->for{;;}
+    select()[检查是否有io事件]
+        deadline以及任务穿插逻辑处理
+            1.定时任务截止事时间快到了，中断本次轮询
+            2.轮询过程中发现有任务加入，中断本次轮询
+        阻塞式select
+        避免jdk空轮询的bug
+    processSelectedKeys()[处理io事件]
+        selected keySet优化
+        processSelectedKeysOptimized()
+            processSelectedKey(key,channel)[处理新连接]
+    runAllTasks()[处理异步任务队列]
+        task的分类和添加(普通task(mpscq)和定时task)
+        定时任务task(根据截至时间)聚合到普通taskQueue
+        任务执行
+### 3.新连接接入
+- 检测新连接
+    processSelectedKey(key,channel)[入口]
+        NioMessageUnsafe.read()
+            doReadMessages()[while循环] 创建新连接对象
+                javaChannel().accept()
+                NioSocketChannel(this, ch)
+- 创建NioSocketChannel
+    new NioSocketChannel(parent, ch)[入口]
+        AbstractNioByteChannel(p,ch,op_read)[逐层调用父类构造函数]
+            configureBlocking(false) & save op[设置非阻塞，保存op成员变量]
+            create id,unsafe,pipline[创建相关组件]
+        new NioSocketChannelConfig()
+            setTcpNoDelay(true)[禁止Nagle算法(小数据包集成大数据包发送)]
+- 分配线程及注册selector
+- 向selector注册读事件
