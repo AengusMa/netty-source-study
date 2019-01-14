@@ -87,5 +87,15 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
             create id,unsafe,pipline[创建相关组件]
         new NioSocketChannelConfig()
             setTcpNoDelay(true)[禁止Nagle算法(小数据包集成大数据包发送)]
+- Netty中的Channel的分类
+    - channel层级
+    - NioServerScoketChannel
+    - NioSocketChannel
+    - Unsafe
 - 分配线程及注册selector
+    - ServerBootstrapAcceptor
+        - 添加childHandler
+            - 
+        - 设置options和attrs
+        - 选择NioEventLoop并注册了selector
 - 向selector注册读事件
