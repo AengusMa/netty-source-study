@@ -95,7 +95,35 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
 - 分配线程及注册selector
     - ServerBootstrapAcceptor
         - 添加childHandler
-            - 
         - 设置options和attrs
         - 选择NioEventLoop并注册了selector
 - 向selector注册读事件
+### 4.pipeline
+- pipeline的初始化
+    - pipeline在创建Channel的时候创建
+    - pipeline节点数据结构：ChannelHandlerContext
+    - pipeline的两大哨兵：head和tail(进行收尾以及资源释放)
+- 添加删除ChannelHandler
+    - 添加
+        - 判读是否重复添加
+        - 创建节点并添加至链表
+        - 回调添加完成事件
+    - 删除
+        - 找到节点
+        - 链表删除
+        - 回调删除handler事件
+- 事件和异常的传播
+    - inBound事件的传播(与添加channelHandler正相关)
+        - 何为inBound事件以及ChannelInboundHandler
+        - ChannelRead事件的传播
+        - SimpleInBoundHandler处理器
+    - outBound事件的传播(与添加channelHandler逆相关)
+        - 何为outBound事件以及ChannelOutBoundHandler
+        - write()事件的传播
+    - 异常的传播
+        - 异常的触发链
+        - 异常处理的最佳实践
+### 5.ByteBuf
+- 内存与内存管理器的抽象
+- 不同规格大小和不同类别的内存的分配策略
+- 内存的回收过程
