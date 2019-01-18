@@ -125,5 +125,27 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
         - 异常处理的最佳实践
 ### 5.ByteBuf
 - 内存与内存管理器的抽象
+    - ByteBuf结构以及重要API
+        - ByteBuf结构
+        - read,write,set方法
+        - mark和reset方法
+    - ByteBuf分类
+        - Pooled(分配好的内存取内存)和Unpooled
+        - Unsafe(使用UnSafe对象)和非Unsafe(不依赖jdk底层的unsafe对象)
+        - Heap(堆上内存分配)和Direct(内存不受jvm控制)
+    - ByteBufAllocator分析(内存分配器)
+        - ByteBufAllocator功能
+        - AbstractByteBufAllocator
+        - ByteBufAllocator两大子类
+            - UnPooledByteBufAllocator分析
+                - heap内存的分配
+                - direct内存分配
+            - PooledByteBufAllocator分析 
+                - 拿到线程局部缓存PoolThreadCache
+                - 在线程局部缓存的Area上进行内存分配
+            - directArena分配direct内存的流程
+                - 从对象池里面拿到PooledByteBuf进行复用
+                - 缓存上进行内存分配
+                - 从内存堆里面进行内存分配
 - 不同规格大小和不同类别的内存的分配策略
 - 内存的回收过程
