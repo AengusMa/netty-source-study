@@ -15,6 +15,11 @@ import io.netty.util.AttributeKey;
 /**
  * @author mawenlong
  * @date 2019/01/13
+ *
+ * 直接内存大小
+ * -XX:MaxDirectMemorySize=96M
+ * 池化
+ * -Dio.netty.allocator.type=pooled
  */
 public class Server {
 
