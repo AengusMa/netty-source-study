@@ -150,5 +150,5 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
 - 不同规格大小和不同类别的内存的分配策略
     - 内存规格(0 (tiny) 512B  (small) 8K  (normal) 16M  (huge))
     - 命中缓存的分配逻辑(MemoryRegionCache)
-    
+    - arena、chrunk,page,subpage概念
 - 内存的回收过程
