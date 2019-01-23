@@ -155,4 +155,11 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
         - 尝试在现有的chunk上分配
         - 创建一个chunk进行分配
         - 初始化PooledByteBuf
+    - subpage级别的内存分配：allocateTiny()
+        - 定位到subpage对象
+        - 初始化subpage
+        - 初始化PooledByteBuf
 - 内存的回收过程
+    - 连续的内存区段加到缓存
+    - 标记连续的内存区段为未使用
+    - ByteBuf加到对象池

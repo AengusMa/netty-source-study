@@ -1,5 +1,6 @@
 package com.mwl;
 
+import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import org.junit.Test;
 
@@ -29,10 +30,23 @@ public class TestIn {
         return normalizedCapacity;
     }
 
+    /**
+     * page分配
+     */
     @Test
     public void testAllocate() {
         int page = 1024 * 8;
         PooledByteBufAllocator allocator = PooledByteBufAllocator.DEFAULT;
         allocator.directBuffer(2 * page);
+    }
+
+    /**
+     * subpage分配
+     */
+    @Test
+    public void testAllocateSubPage() {
+        PooledByteBufAllocator allocator = PooledByteBufAllocator.DEFAULT;
+        ByteBuf byteBuf = allocator.directBuffer(16);
+        byteBuf.release();
     }
 }
