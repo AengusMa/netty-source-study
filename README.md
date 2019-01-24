@@ -163,3 +163,13 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
     - 连续的内存区段加到缓存
     - 标记连续的内存区段为未使用
     - ByteBuf加到对象池
+### 6.netty解码
+- 解码器抽象的解码过程
+- netty里面有哪些拆箱即用的解码器
+
+- 解码器的基类(ByteToMessageDecoder)
+    - 累加字节流
+    - 调用子类的decode方法进行解析
+    - 将解析到的ByteBuf向下传播
+- Netty中常见的解码器分析
+
