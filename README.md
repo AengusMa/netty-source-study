@@ -223,8 +223,10 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
             - 获取当前线程的Stack
             - 从Stack里面弹出对象
             - 创建对象并绑定到Stack
+        同线程回收对象
         - 异线程回收对象
             - 获取WeakOrderQueue
             - 创建WeakOrderQueue
             - 将对象追加到WeakOrderQueue
+        - 异线程收割对象
     
