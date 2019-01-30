@@ -206,3 +206,25 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
         - 添加刷新标志并设置写状态
         - 遍历buffer队列，过滤ByteBuf
         - 调用jdk底层api进行自旋写
+### 8.netty性能优化工具类解析
+    - FastThreadLocal的实现机制
+        - FastThreadLocal的创建
+        - FastThreadLocal的get()方法实现
+            - 获取ThreadLocalMap
+            - 直接通过索引取出对象
+            - 初始化
+        - FastThreadLocal的set()方法实现
+            - 获取ThreadLocalMap
+            - 直接通过索引set对象
+            - remove对象
+    - Recycler(轻量级对象池)
+        - Recycler的创建
+        - 从Recycler获取对象
+            - 获取当前线程的Stack
+            - 从Stack里面弹出对象
+            - 创建对象并绑定到Stack
+        - 异线程回收对象
+            - 获取WeakOrderQueue
+            - 创建WeakOrderQueue
+            - 将对象追加到WeakOrderQueue
+    
