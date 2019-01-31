@@ -187,46 +187,68 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
             - 跳过字节逻辑处理
             - 丢弃模式下的处理
 ### 7.netty编码
-    - writeAndFlush()
-        - 从tail节点开始往前传播
-        - 逐个调用channelHandle的write方法
-        - 逐个调用channelHandle的flush方法
-    - 编码器处理逻辑：MessageToByteEncode的write方法
-        - 匹配对象
-        - 分配内存
-        - 编码实现
-        - 释放对象
-        - 传播数据
-        - 释放内存
-    - write-写buffer队列
-        - direct化ByteBuf
-        - 插入到写队列
-        - 设置写状态
-    - write-刷新buffer队列
-        - 添加刷新标志并设置写状态
-        - 遍历buffer队列，过滤ByteBuf
-        - 调用jdk底层api进行自旋写
+- writeAndFlush()
+    - 从tail节点开始往前传播
+    - 逐个调用channelHandle的write方法
+    - 逐个调用channelHandle的flush方法
+- 编码器处理逻辑：MessageToByteEncode的write方法
+    - 匹配对象
+    - 分配内存
+    - 编码实现
+    - 释放对象
+    - 传播数据
+    - 释放内存
+- write-写buffer队列
+    - direct化ByteBuf
+    - 插入到写队列
+    - 设置写状态
+- write-刷新buffer队列
+    - 添加刷新标志并设置写状态
+    - 遍历buffer队列，过滤ByteBuf
+    - 调用jdk底层api进行自旋写
 ### 8.netty性能优化工具类解析
-    - FastThreadLocal的实现机制
-        - FastThreadLocal的创建
-        - FastThreadLocal的get()方法实现
-            - 获取ThreadLocalMap
-            - 直接通过索引取出对象
-            - 初始化
-        - FastThreadLocal的set()方法实现
-            - 获取ThreadLocalMap
-            - 直接通过索引set对象
-            - remove对象
-    - Recycler(轻量级对象池)
-        - Recycler的创建
-        - 从Recycler获取对象
-            - 获取当前线程的Stack
-            - 从Stack里面弹出对象
-            - 创建对象并绑定到Stack
-        同线程回收对象
-        - 异线程回收对象
-            - 获取WeakOrderQueue
-            - 创建WeakOrderQueue
-            - 将对象追加到WeakOrderQueue
-        - 异线程收割对象
-    
+- FastThreadLocal的实现机制
+    - FastThreadLocal的创建
+    - FastThreadLocal的get()方法实现
+        - 获取ThreadLocalMap
+        - 直接通过索引取出对象
+        - 初始化
+    - FastThreadLocal的set()方法实现
+        - 获取ThreadLocalMap
+        - 直接通过索引set对象
+        - remove对象
+- Recycler(轻量级对象池)
+    - Recycler的创建
+    - 从Recycler获取对象
+        - 获取当前线程的Stack
+        - 从Stack里面弹出对象
+        - 创建对象并绑定到Stack
+    - 同线程回收对象
+    - 异线程回收对象
+        - 获取WeakOrderQueue
+        - 创建WeakOrderQueue
+        - 将对象追加到WeakOrderQueue
+    - 异线程收割对象
+### 8.netty设计模式应用
+- 单例模式
+    - 一个类全局只有一个对象
+    - 延迟创建
+    - 避免线程安全问题
+- 策略模式
+    - 封装一系列可相互替换的算法家族
+    - 动态选择某一策略
+- 装饰者模式
+    - 装饰者和被装饰者继承同一个接口
+    - 装饰者给被装饰者动态修改行为
+- 观察者模式
+    - 观察者与被观察者
+    - 观察者订阅消息，被观察者发布消息
+    - 订阅则能收到，取消订阅则收不到消息
+- 迭代器模式(内存零拷贝)
+    - 迭代器接口
+    - 对容器里面各个对象进行访问
+- 责任链模式
+    - 责任处理器接口(ChannelHandler:ChannelInboundHandler,ChannelOutboundHandler)
+    - 创建链，添加删除责任处理器接口(ChannelPipeline)
+    - 上下文(ChannelHandlerContext)
+    - 责任终止机制(fireChannelRead向下传播)
