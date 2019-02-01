@@ -229,7 +229,7 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
         - 创建WeakOrderQueue
         - 将对象追加到WeakOrderQueue
     - 异线程收割对象
-### 8.netty设计模式应用
+### 9.netty设计模式应用
 - 单例模式
     - 一个类全局只有一个对象
     - 延迟创建
@@ -252,3 +252,16 @@ new NioEventLoopGroup()[线程组，默认2*CPU]
     - 创建链，添加删除责任处理器接口(ChannelPipeline)
     - 上下文(ChannelHandlerContext)
     - 责任终止机制(fireChannelRead向下传播)
+### 10.netty高并发性能调优
+- 单机百万连接调优(vagrant虚拟机)
+    - 如何模拟百万模拟
+    - 突破局部文件句柄限制
+        - ulimit -n (一个线程能够打开的文件数)
+        - /etc/security/limits.conf文件末尾添加 重启生效
+            * root soft nofile 100001
+            * 65 root hard nofile 100002
+    - 突破全局文件句柄限制
+        - cat /proc/sys/fs/file-max (echo 1000000 >/proc/sys/fs/file-max )
+        - /etc/sysctl.conf文件末尾添加 sudo sysctl -p 生效
+            fs.file-max=1000000
+- netty应用级别性能调优
