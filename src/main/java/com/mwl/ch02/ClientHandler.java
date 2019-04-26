@@ -34,8 +34,11 @@ public class ClientHandler {
                     System.out.println("客户端传来的消息：" + message);
                     socket.getOutputStream().write(data);
                 }
+                System.out.println(socket.getInetAddress() + "==" + socket.isClosed() + "==" +
+                                   socket.isConnected());
             }
         } catch (IOException e) {
+            System.out.println(socket.getInetAddress() + "==" + socket.isClosed());
             e.printStackTrace();
         }
 

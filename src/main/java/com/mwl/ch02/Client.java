@@ -10,14 +10,14 @@ import java.net.Socket;
 public class Client {
     private static final String HOST = "127.0.0.1";
     private static final int PORT = 8000;
-    private static final int SLEEP_TIME = 5000;
+    private static final int SLEEP_TIME = 1000;
 
     public static void main(String[] args) throws IOException {
         // NioEvent
         final Socket socket = new Socket(HOST, PORT);
         new Thread(() -> {
             System.out.println("客户端启动成功");
-            while (true) {
+            for (int i=0;i<3;i++){
                 try {
                     String message = "hello world";
                     System.out.println("客户端发送数据：" + message);
@@ -27,6 +27,11 @@ public class Client {
                     System.out.println("写数据出错");
                 }
                 sleep();
+            }
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }).start();
     }

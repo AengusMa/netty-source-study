@@ -17,6 +17,8 @@ import java.util.Set;
 /**
  * @author mawenlong
  * @date 2019/01/17
+ *
+ * 非阻塞IO
  */
 public class PlainNioServer {
 

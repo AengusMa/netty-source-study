@@ -13,6 +13,8 @@ import java.net.Socket;
 /**
  * @author mawenlong
  * @date 2019/01/17
+ *
+ * 阻塞IO
  */
 @Slf4j
 public class PlainOioServer {
